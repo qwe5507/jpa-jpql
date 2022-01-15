@@ -4,6 +4,15 @@ import javax.persistence.*;
 
 @Entity
 public class Member {
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
     @Id @GeneratedValue
     private Long id;
     private String username;
