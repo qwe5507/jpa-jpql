@@ -27,12 +27,12 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select m from Member m left outer join Team t on m.username = t.name";
-            List<Member> result = em.createQuery(query, Member.class)
+            String query = "select m ,(select m1.age from Member as m1) as m2 from Member m left outer join Team t on m.username = t.name";
+            List<Integer> result = em.createQuery(query, Integer.class)
                     .getResultList();
 
             System.out.println("result = " + result.size());
-            for (Member member1 : result) {
+            for (Integer member1 : result) {
                 System.out.println("member1 = " + member1);
             }
 
