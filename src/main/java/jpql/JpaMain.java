@@ -14,12 +14,13 @@ public class JpaMain {
         //code
         try {
             Team team = new Team();
-            team.setName("teamA");
+            team.setName("member1");
             em.persist(team);
 
             Member member = new Member();
             member.setUsername("teamA");
             member.setAge(10);
+            member.setType(MemberType.ADMIN);
             member.changeTeam(team);
 
             em.persist(member) ;
@@ -27,13 +28,17 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select m ,(select m1.age from Member as m1) as m2 from Member m left outer join Team t on m.username = t.name";
-            List<Integer> result = em.createQuery(query, Integer.class)
+            String query = "select m.username, 'HELLO', TRUE from Member m " +
+                            "where m.type = :userType";
+            List<Object[]> result = em.createQuery(query)
+                    .setParameter("userType", MemberType.ADMIN)
                     .getResultList();
 
             System.out.println("result = " + result.size());
-            for (Integer member1 : result) {
-                System.out.println("member1 = " + member1);
+            for (Object[] objects : result) {
+                System.out.println("objects = " + objects[0]);
+                System.out.println("objects = " + objects[1]);
+                System.out.println("objects = " + objects[2]);
             }
 
             tx.commit();
